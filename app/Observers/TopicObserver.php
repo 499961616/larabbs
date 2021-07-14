@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Handlers\SlugTranslateHandler;
 use App\Models\Topic;
 use App\Models\User;
 
@@ -14,9 +15,20 @@ class TopicObserver
 
     public function saving(Topic $topic)
     {
+        //防止xxs攻击  进行过滤
         $topic->body = clean($topic->body,'user_topic_body');
+
+        //话题摘录
         $topic->excerpt = make_excerpt($topic->body);
+
+        //slug字段没内容，则使用翻译器 对提提了进行翻译
+        if (!$topic->slug){
+
+            $topic->slug = app(SlugTranslateHandler::class)->translate($topic->title);
+        }
     }
+
+
 
 
 }

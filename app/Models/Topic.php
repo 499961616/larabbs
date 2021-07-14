@@ -26,7 +26,6 @@ class Topic extends Model
     public function scopeWithOrder($query,$order)
     {
         //根据不同排序 使用不同语句查询
-
         switch ($order){
             case 'recent':
                 $query->recent();
@@ -46,5 +45,11 @@ class Topic extends Model
     public function scopeRecentReplied($query)
     {
         return $query->orderBy('created_at','desc');
+    }
+
+    //话题的链接生成
+    public function link($params = [])
+    {
+        return route('topics.show', array_merge([$this->id, $this->slug], $params));
     }
 }
