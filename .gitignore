@@ -14,3 +14,4 @@ yarn-error.log
 /.idea
 /.vscode
 public/uploads/images/avatars/.gitignore
+public/uploads/images/topics/.gitignore
