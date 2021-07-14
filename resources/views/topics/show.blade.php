@@ -38,13 +38,7 @@
             <i class="far fa-comment"></i>
             {{ $topic->reply_count }}
           </div>
-          <div class="topic-body mt-4 mb-4">
-            <h2>说明</h2>
-            <blockquote>
-              <p>{!! $topic->excerpt !!}</p>
-            </blockquote>
 
-          </div>
           <div class="topic-body mt-4 mb-4">
             {!! $topic->body !!}
           </div>
