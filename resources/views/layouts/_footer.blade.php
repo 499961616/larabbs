@@ -6,4 +6,4 @@
 
         <p class="float-right"><a href="mailto:499961616@qq.com">联系我们</a></p>
     </div>
-</footer><?php
+</footer>
