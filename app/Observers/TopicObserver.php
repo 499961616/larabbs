@@ -6,6 +6,7 @@ use App\Handlers\SlugTranslateHandler;
 use App\Jobs\TranslateSlug;
 use App\Models\Topic;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored
@@ -32,6 +33,12 @@ class TopicObserver
             //推送任务到队列
             dispatch(new TranslateSlug($topic));
         }
+    }
+
+    public function deleted(Topic $topic)
+    {
+
+        DB::table('replies')->where('topic_id',$topic->id)->delete();
     }
 
 

@@ -55,7 +55,7 @@ class RepliesController extends Controller
 		$this->authorize('update', $reply);
 		$reply->update($request->all());
 
-		return redirect()->route('replies.show', $reply->id)->with('message', 'Updated successfully.');
+		return redirect()->to('replies.show', $reply->id)->with('message', 'Updated successfully.');
 	}
 
 	public function destroy(Reply $reply)
@@ -63,6 +63,7 @@ class RepliesController extends Controller
 		$this->authorize('destroy', $reply);
 		$reply->delete();
 
-		return redirect()->route('replies.index')->with('message', 'Deleted successfully.');
-	}
+        return redirect()->to($reply->topic->link())->with('message', 'Updated successfully.');
+
+    }
 }
