@@ -23,6 +23,11 @@ class Topic extends Model
 
     }
 
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
     public function scopeWithOrder($query,$order)
     {
         //根据不同排序 使用不同语句查询
