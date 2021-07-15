@@ -12,14 +12,18 @@ class ReplyObserver
 {
     public function created(Reply $reply)
     {
-        $reply->topic->updateReplyCount();
+        if (! app()->runningInConsole()){
+            $reply->topic->updateReplyCount();
 
-        //通知话题作者 有新的评论消息
-        $reply->topic->user->topicNotify(new TopicReplied($reply));
+            //通知话题作者 有新的评论消息
+            $reply->topic->user->topicNotify(new TopicReplied($reply));
+        }
+
     }
 
     public function creating(Reply $reply)
     {
+
         $reply->content = clean($reply->content, 'user_topic_body');
     }
 
