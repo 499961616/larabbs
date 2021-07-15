@@ -11,28 +11,22 @@ use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasFactory,MustVerifyEmailTrait;
-    use Notifiable{
-        notify as protected laravelNotify;
-    }
+    use HasFactory,Notifiable,MustVerifyEmailTrait;
 
-    public function notify($instance)
+    //消息通知判断
+    public function topicNotify($instance)
     {
+
+        //自己发自己的话题就不需要提醒
         if ($this->id ==Auth::id()){
             return false;
         }
-
-        if (method_exists($instance,'toDatabase')){
             $this->increment('notification_count');
-        }
-        $this->laravelNotify($instance);
+
+        $this->notify($instance);
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = [
         'name',
         'email',
@@ -41,11 +35,6 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'avatar'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -53,7 +42,6 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     /**
      * The attributes that should be cast to native types.
-     *
      * @var array
      */
     protected $casts = [
@@ -74,5 +62,12 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+        $this->unreadNotifications->markAsRead();
     }
 }

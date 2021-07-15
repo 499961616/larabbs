@@ -16,7 +16,7 @@ class ReplyObserver
         $reply->topic->save();
 
         //通知话题作者 有新的评论消息
-        $reply->topic->user->notify(new TopicReplied($reply));
+        $reply->topic->user->topicNotify(new TopicReplied($reply));
     }
 
     public function creating(Reply $reply)
